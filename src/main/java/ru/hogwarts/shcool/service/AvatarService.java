@@ -43,10 +43,7 @@ public class AvatarService {
                 ){
             bis.transferTo(bos);
         }
-        Avatar avatar = findAvatar(studentId);
-        if (avatar == null) {
-            avatar = new Avatar();
-        }
+        Avatar avatar = new Avatar();
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
