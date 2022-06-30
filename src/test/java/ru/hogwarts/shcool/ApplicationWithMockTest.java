@@ -140,7 +140,7 @@ public class ApplicationWithMockTest {
     @Test
     public void testDeleteFaculty() throws Exception {
 
-        doNothing().when(facultyRepository).deleteById(1L);
+        doNothing().when(facultyRepository).deleteById(3L);
 
         mockMvc.perform(delete("/faculty/1"))
                 .andExpect(status().isOk());
@@ -217,11 +217,6 @@ public class ApplicationWithMockTest {
         faculty.setName("radio");
         faculty.setColor("red");
 
-//        Student student = new Student();
-//        student.setId(1L);
-//        student.setName("Ivan");
-//        student.setAge(20);
-
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -233,6 +228,6 @@ public class ApplicationWithMockTest {
                 .andExpect(jsonPath("$[0].age").value(20))
                 .andExpect(jsonPath("$[1].id").value(4L))
                 .andExpect(jsonPath("$[1].name").value("Оля"))
-                .andExpect(jsonPath("$[0].age").value(21));
+                .andExpect(jsonPath("$[1].age").value(21));
     }
 }
