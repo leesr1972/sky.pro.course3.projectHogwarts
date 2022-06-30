@@ -228,8 +228,11 @@ public class ApplicationWithMockTest {
                         .get("/faculty/students/?id=1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("Ivan"))
-                .andExpect(jsonPath("$.age").value(20));
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("Иван"))
+                .andExpect(jsonPath("$[0].age").value(20))
+                .andExpect(jsonPath("$[1].id").value(4L))
+                .andExpect(jsonPath("$[1].name").value("Оля"))
+                .andExpect(jsonPath("$[0].age").value(21));
     }
 }
