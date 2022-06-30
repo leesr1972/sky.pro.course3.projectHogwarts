@@ -14,6 +14,7 @@ import ru.hogwarts.shcool.controller.FacultyController;
 import ru.hogwarts.shcool.model.Faculty;
 import ru.hogwarts.shcool.repository.FacultyRepository;
 import ru.hogwarts.shcool.service.FacultyService;
+import ru.hogwarts.shcool.service.StudentService;
 
 import java.util.Optional;
 
@@ -31,6 +32,9 @@ public class ApplicationWithMockTest {
     @MockBean
     private FacultyRepository facultyRepository;
 
+    @MockBean
+    private StudentService studentService;
+
     @SpyBean
     private FacultyService facultyService;
 
@@ -44,6 +48,7 @@ public class ApplicationWithMockTest {
         String color = "red";
 
         JSONObject facultyObject = new JSONObject();
+        facultyObject.put("id", id);
         facultyObject.put("name", name);
         facultyObject.put("color", color);
 
@@ -61,8 +66,8 @@ public class ApplicationWithMockTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("id"))
-                .andExpect(jsonPath("$.name").value("name"))
-                .andExpect(jsonPath("$.color").value("color"));
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value(name))
+                .andExpect(jsonPath("$.color").value(color));
     }
 }
