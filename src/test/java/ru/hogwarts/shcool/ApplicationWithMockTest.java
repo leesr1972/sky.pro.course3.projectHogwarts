@@ -44,8 +44,8 @@ public class ApplicationWithMockTest {
     @MockBean
     private StudentService studentService;
 
-    @MockBean
-    private StudentRepository studentRepository;
+//    @MockBean
+//    private StudentRepository studentRepository;
 
     @MockBean
     private AvatarService avatarService;
@@ -220,7 +220,7 @@ public class ApplicationWithMockTest {
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/students/?id=1")
+                        .get("/faculty/students?id=1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
