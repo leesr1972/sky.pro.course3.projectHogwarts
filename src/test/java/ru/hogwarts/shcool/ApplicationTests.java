@@ -64,7 +64,6 @@ class ApplicationTests {
     }
 
     @Test
-//    @Transactional
     public void testPostStudent() throws Exception {
         Student student = new Student();
         student.setName("John");
