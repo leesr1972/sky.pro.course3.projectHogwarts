@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.shcool.controller.FacultyController;
 import ru.hogwarts.shcool.model.Faculty;
 import ru.hogwarts.shcool.model.Student;
+import ru.hogwarts.shcool.repository.AvatarRepository;
 import ru.hogwarts.shcool.repository.FacultyRepository;
 import ru.hogwarts.shcool.repository.StudentRepository;
 import ru.hogwarts.shcool.service.AvatarService;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(controllers = FacultyController.class)
 public class ApplicationWithMockTest {
 
     @Autowired
@@ -40,15 +41,6 @@ public class ApplicationWithMockTest {
 
     @MockBean
     private FacultyRepository facultyRepository;
-
-    @MockBean
-    private StudentService studentService;
-
-    @MockBean
-    private StudentRepository studentRepository;
-
-    @MockBean
-    private AvatarService avatarService;
 
     @SpyBean
     private FacultyService facultyService;
@@ -142,7 +134,7 @@ public class ApplicationWithMockTest {
 
         doNothing().when(facultyRepository).deleteById(3L);
 
-        mockMvc.perform(delete("/faculty/1"))
+        mockMvc.perform(delete("/faculty/3"))
                 .andExpect(status().isOk());
     }
 
@@ -212,15 +204,27 @@ public class ApplicationWithMockTest {
 
     @Test
     public void testGetStudentOfFaculty() throws Exception {
+
+        Student student1 = new Student();
+        student1.setId(1L);
+        student1.setName("Иван");
+        student1.setAge(20);
+
+        Student student2 = new Student();
+        student2.setId(4L);
+        student2.setName("Оля");
+        student2.setAge(21);
+
         Faculty faculty = new Faculty();
         faculty.setId(1L);
         faculty.setName("radio");
         faculty.setColor("red");
+        faculty.setStudents(List.of(student1, student2));
 
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/students/?id=1")
+                        .get("/faculty/students?id=1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
