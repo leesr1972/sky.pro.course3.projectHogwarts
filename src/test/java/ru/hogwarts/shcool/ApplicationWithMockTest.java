@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(controllers = FacultyController.class)
 public class ApplicationWithMockTest {
 
     @Autowired
@@ -40,15 +40,6 @@ public class ApplicationWithMockTest {
 
     @MockBean
     private FacultyRepository facultyRepository;
-
-    @MockBean
-    private StudentService studentService;
-
-    @MockBean
-    private StudentRepository studentRepository;
-
-    @MockBean
-    private AvatarService avatarService;
 
     @SpyBean
     private FacultyService facultyService;
