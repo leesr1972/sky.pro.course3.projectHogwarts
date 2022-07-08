@@ -63,6 +63,9 @@ public class AvatarService {
     }
 
     public Collection<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        if (pageNumber <= 0 || pageNumber > avatarRepository.count() / pageSize) {
+            throw new RuntimeException();
+        }
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
