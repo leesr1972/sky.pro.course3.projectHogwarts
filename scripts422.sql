@@ -18,8 +18,6 @@ VALUES (1, 'Ivan', 20, true, 1),
        (3, 'Slava', 50, true, 2),
        (4, 'Marina', 43, false, 2);
 
-DELETE FROM people;
-
 CREATE TABLE cars
 (
     id    SERIAL PRIMARY KEY,
