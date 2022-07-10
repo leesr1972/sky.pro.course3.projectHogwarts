@@ -7,7 +7,7 @@ CREATE TABLE people
 );
 
 ALTER TABLE people
-    ADD car_id INTEGER;
+    ADD car_id INTEGER REFERENCES cars(id);
 
 ALTER TABLE people
     ADD PRIMARY KEY (id);
@@ -17,6 +17,8 @@ VALUES (1, 'Ivan', 20, true, 1),
        (2, 'Ira', 18, false, 1),
        (3, 'Slava', 50, true, 2),
        (4, 'Marina', 43, false, 2);
+
+DELETE FROM people;
 
 CREATE TABLE cars
 (
