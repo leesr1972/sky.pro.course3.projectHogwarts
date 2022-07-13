@@ -14,7 +14,7 @@ import java.util.List;
 public class StudentService {
     private final StudentRepository studentRepository;
 
-    Logger LOGGER = LoggerFactory.getLogger(StudentService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentService.class);
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
