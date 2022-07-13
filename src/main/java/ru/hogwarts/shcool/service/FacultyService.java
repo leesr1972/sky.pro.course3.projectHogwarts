@@ -14,50 +14,50 @@ import java.util.List;
 public class FacultyService {
     private final FacultyRepository facultyRepository;
 
-    Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    Logger LOGGER = LoggerFactory.getLogger(FacultyService.class);
 
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
     }
 
     public Faculty addFaculty(Faculty faculty) {
-        logger.info("Was invoked method for add faculty.");
+        LOGGER.info("Was invoked method for add faculty.");
         return facultyRepository.save(faculty);
     }
 
     public Faculty findFaculty (Long id){
-        logger.info("Was invoked method for find faculty.");
+        LOGGER.info("Was invoked method for find faculty.");
         return facultyRepository.findById(id).get();
     }
 
     public Faculty editFaculty(Faculty faculty) {
-        logger.info("Was invoked method for edit faculty.");
+        LOGGER.info("Was invoked method for edit faculty.");
         return facultyRepository.save(faculty);
     }
 
     public void deleteFaculty (Long id){
-        logger.info("Was invoked method for delete faculty.");
+        LOGGER.info("Was invoked method for delete faculty.");
         facultyRepository.deleteById(id);
     }
 
     public List<Faculty> getFacultiesByColor(String color) {
-        logger.info("Was invoked method for get faculties by color.");
+        LOGGER.info("Was invoked method for get faculties by color.");
         return facultyRepository.findAll().stream().
                 filter(e -> e.getColor().equals(color)).toList();
     }
 
     public Collection<Faculty> getAllFaculties() {
-        logger.info("Was invoked method for get all faculties.");
+        LOGGER.info("Was invoked method for get all faculties.");
         return facultyRepository.findAll();
     }
 
     public Collection<Faculty> getFacultyByNameOrColor (String name, String color) {
-        logger.info("Was invoked method for find faculties with name {} or color {}.", name, color);
+        LOGGER.info("Was invoked method for find faculties with name {} or color {}.", name, color);
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
     }
 
     public Collection<Student> getStudentsOfFaculty (Long id) {
-        logger.info("Was invoked method for get of faculty {}.", facultyRepository.findById(id).get().getName());
+        LOGGER.info("Was invoked method for get of faculty {}.", facultyRepository.findById(id).get().getName());
         return facultyRepository.findById(id).get().getStudents();
     }
 }

@@ -29,7 +29,7 @@ public class AvatarService {
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
 
-    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+    Logger LOGGER = LoggerFactory.getLogger(AvatarService.class);
 
     public AvatarService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
@@ -37,7 +37,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
-        logger.info("Was invoked method for upload avatar for student.");
+        LOGGER.info("Was invoked method for upload avatar for student.");
         Student student = studentRepository.findById(studentId).orElseThrow();
         Path filePath = Path.of(avatarDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -64,14 +64,14 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long studentId) {
-        logger.info("Was invoked method for find avatar for student.");
+        LOGGER.info("Was invoked method for find avatar for student.");
         return avatarRepository.findByStudentId(studentId).orElseThrow();
     }
 
     public Collection<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
-        logger.info("Was invoked method for get all avatars.");
+        LOGGER.info("Was invoked method for get all avatars.");
         if (pageNumber <= 0 || pageNumber > avatarRepository.count() / pageSize) {
-            logger.error("There is not page with page number = " + pageNumber);
+            LOGGER.error("There is not page with page number = " + pageNumber);
             throw new RuntimeException();
         }
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
