@@ -31,7 +31,7 @@ public class StudentService {
 
     public Student findStudent(Long id) {
         LOGGER.info("Was invoked method for find student.");
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElseThrow();
     }
 
     public Student editStudent(Student student) {
@@ -62,7 +62,7 @@ public class StudentService {
 
     public Faculty getFacultyOfStudent(Long id) {
         LOGGER.info("Was invoked method for get faculty of student.");
-        return studentRepository.findById(id).get().getFaculty();
+        return studentRepository.findById(id).orElseThrow().getFaculty();
     }
 
     public Integer getQuantityOfStudents() {
