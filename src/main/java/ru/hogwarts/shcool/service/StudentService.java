@@ -9,6 +9,9 @@ import ru.hogwarts.shcool.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -75,5 +78,27 @@ public class StudentService {
     public Collection<Student> getLast5Students() {
         LOGGER.info("Was invoked method for get last 5 students.");
         return studentRepository.getLast5Students();
+    }
+
+    public List<String> getNamesOfStudentsStartingWithLetter(Character firstLetter) {
+        return studentRepository.findAll().stream()
+                .filter(s->s.getName().startsWith(String.valueOf(firstLetter)))
+                .map(s->s.getName().toUpperCase()).sorted().collect(Collectors.toList());
+    }
+
+    public OptionalDouble getAvarageAgeOfStudents2() {
+        LOGGER.info("Was invoked second method for get avarage age of students.");
+        List<Integer> listOfAges = studentRepository.findAll().stream()
+                .map(Student::getAge).toList();
+        return listOfAges.stream().mapToDouble(e->e).average();
+    }
+
+    public Integer getSum() {
+        LOGGER.info("Was invoked method for get sum.");
+        Integer sum = Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .parallel()
+                .reduce(0, (a, b) -> a + b);
+        return sum;
     }
 }

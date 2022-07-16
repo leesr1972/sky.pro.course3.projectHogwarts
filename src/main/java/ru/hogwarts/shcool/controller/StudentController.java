@@ -8,6 +8,7 @@ import ru.hogwarts.shcool.service.StudentService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @RestController
 @RequestMapping("/student")
@@ -81,5 +82,20 @@ public class StudentController {
     @GetMapping("/getLastStudents")
     public ResponseEntity<Collection<Student>> getLast5Students() {
         return ResponseEntity.ok(studentService.getLast5Students());
+    }
+
+    @GetMapping("/getNamesOfStudentsStartingWithLetter")
+    public ResponseEntity<List<String>> getNamesOfStudentsStartingWithLetter(@RequestParam Character firstLetter) {
+        return ResponseEntity.ok(studentService.getNamesOfStudentsStartingWithLetter(firstLetter));
+    }
+
+    @GetMapping("/getAvarageAgeOfStudents2")
+    public ResponseEntity<OptionalDouble> getAvarageOfStudents2() {
+        return ResponseEntity.ok(studentService.getAvarageAgeOfStudents2());
+    }
+
+    @GetMapping("/getSum")
+    public ResponseEntity<Integer> getSum() {
+        return ResponseEntity.ok(studentService.getSum());
     }
 }
