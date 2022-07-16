@@ -98,10 +98,9 @@ public class StudentService {
         long start = System.currentTimeMillis();
         Integer sum = Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
-//                .parallel()
-                .reduce(0, (a, b) -> a + b );
+                .parallel()
+                .reduce(0, (a, b) -> a + b);
         long operatingTime = System.currentTimeMillis() - start;
-        LOGGER.info("Operating time is " + operatingTime + " ms.");
         return sum;
     }
 }
