@@ -82,23 +82,66 @@ public class StudentService {
 
     public List<String> getNamesOfStudentsStartingWithLetter(Character firstLetter) {
         return studentRepository.findAll().stream()
-                .filter(s->s.getName().startsWith(String.valueOf(firstLetter)))
-                .map(s->s.getName().toUpperCase()).sorted().collect(Collectors.toList());
+                .filter(s -> s.getName().startsWith(String.valueOf(firstLetter)))
+                .map(s -> s.getName().toUpperCase()).sorted().collect(Collectors.toList());
     }
 
-    public OptionalDouble getAvarageAgeOfStudents2() {
+    public Double getAvarageAgeOfStudents2() {
         LOGGER.info("Was invoked second method for get avarage age of students.");
         List<Integer> listOfAges = studentRepository.findAll().stream()
                 .map(Student::getAge).toList();
-        return listOfAges.stream().mapToDouble(e->e).average();
+        return listOfAges.stream().mapToDouble(e -> e).average().getAsDouble();
     }
 
-    public Integer getSum() {
+    public Long getSum() {
         LOGGER.info("Was invoked method for get sum.");
-        Integer sum = Stream.iterate(1, a -> a + 1)
+        Long sum = Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
                 .parallel()
+                .mapToLong(e -> e)
                 .reduce(0, (a, b) -> a + b);
         return sum;
+    }
+
+    public void getNamesOfFirst6StudentsWithoutSync() {
+
+        System.out.println("Name: " + studentRepository.findById(1L).get().getName()
+                + ", id " + studentRepository.findById(1L).get().getId());
+        System.out.println("Name: " + studentRepository.findById(2L).get().getName()
+                + ", id " + studentRepository.findById(2L).get().getId());
+
+        new Thread(() -> {
+            System.out.println("Name: " + studentRepository.findById(3L).get().getName()
+                    + ", id " + studentRepository.findById(3L).get().getId());
+            System.out.println("Name: " + studentRepository.findById(4L).get().getName()
+                    + ", id " + studentRepository.findById(4L).get().getId());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println("Name: " + studentRepository.findById(5L).get().getName()
+                    + ", id " + studentRepository.findById(5L).get().getId());
+            System.out.println("Name: " + studentRepository.findById(6L).get().getName()
+                    + ", id " + studentRepository.findById(6L).get().getId());
+        }).start();
+    }
+
+    private synchronized void printNameAndIdOfStudentById(Long id) {
+        System.out.println("Name: " + studentRepository.findById(id).get().getName()
+                + ", id " + studentRepository.findById(id).get().getId());
+    }
+
+    public void getNamesOfFirst6StudentsWithSync() {
+        printNameAndIdOfStudentById(1L);
+        printNameAndIdOfStudentById(2L);
+
+        new Thread(() -> {
+            printNameAndIdOfStudentById(3L);
+            printNameAndIdOfStudentById(4L);
+        }).start();
+
+        new Thread(() -> {
+            printNameAndIdOfStudentById(5L);
+            printNameAndIdOfStudentById(6L);
+        }).start();
     }
 }
