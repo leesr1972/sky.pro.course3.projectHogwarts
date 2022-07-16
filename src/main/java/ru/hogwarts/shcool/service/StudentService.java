@@ -95,12 +95,10 @@ public class StudentService {
 
     public Integer getSum() {
         LOGGER.info("Was invoked method for get sum.");
-        long start = System.currentTimeMillis();
         Integer sum = Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
                 .parallel()
                 .reduce(0, (a, b) -> a + b);
-        long operatingTime = System.currentTimeMillis() - start;
         return sum;
     }
 }
