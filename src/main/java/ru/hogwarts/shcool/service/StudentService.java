@@ -105,29 +105,29 @@ public class StudentService {
 
     public void getNamesOfFirst6StudentsWithoutSync() {
 
-        System.out.println("Name: " + studentRepository.findById(1L).get().getName()
-                + ", id " + studentRepository.findById(1L).get().getId());
-        System.out.println("Name: " + studentRepository.findById(2L).get().getName()
-                + ", id " + studentRepository.findById(2L).get().getId());
+        System.out.println("Name: " + studentRepository.findById(1L).orElseThrow().getName()
+                + ", id " + studentRepository.findById(1L).orElseThrow().getId());
+        System.out.println("Name: " + studentRepository.findById(2L).orElseThrow().getName()
+                + ", id " + studentRepository.findById(2L).orElseThrow().getId());
 
         new Thread(() -> {
-            System.out.println("Name: " + studentRepository.findById(3L).get().getName()
-                    + ", id " + studentRepository.findById(3L).get().getId());
-            System.out.println("Name: " + studentRepository.findById(4L).get().getName()
-                    + ", id " + studentRepository.findById(4L).get().getId());
+            System.out.println("Name: " + studentRepository.findById(3L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(3L).orElseThrow().getId());
+            System.out.println("Name: " + studentRepository.findById(4L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(4L).orElseThrow().getId());
         }).start();
 
         new Thread(() -> {
-            System.out.println("Name: " + studentRepository.findById(5L).get().getName()
-                    + ", id " + studentRepository.findById(5L).get().getId());
-            System.out.println("Name: " + studentRepository.findById(6L).get().getName()
-                    + ", id " + studentRepository.findById(6L).get().getId());
+            System.out.println("Name: " + studentRepository.findById(5L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(5L).orElseThrow().getId());
+            System.out.println("Name: " + studentRepository.findById(6L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(6L).orElseThrow().getId());
         }).start();
     }
 
     private synchronized void printNameAndIdOfStudentById(Long id) {
-        System.out.println("Name: " + studentRepository.findById(id).get().getName()
-                + ", id " + studentRepository.findById(id).get().getId());
+        System.out.println("Name: " + studentRepository.findById(id).orElseThrow().getName()
+                + ", id " + studentRepository.findById(id).orElseThrow().getId());
     }
 
     public void getNamesOfFirst6StudentsWithSync() {
