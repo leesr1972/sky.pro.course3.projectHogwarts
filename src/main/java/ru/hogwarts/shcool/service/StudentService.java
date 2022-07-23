@@ -31,7 +31,7 @@ public class StudentService {
 
     public Student findStudent(Long id) {
         LOGGER.info("Was invoked method for find student.");
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElseThrow();
     }
 
     public Student editStudent(Student student) {
@@ -62,7 +62,7 @@ public class StudentService {
 
     public Faculty getFacultyOfStudent(Long id) {
         LOGGER.info("Was invoked method for get faculty of student.");
-        return studentRepository.findById(id).get().getFaculty();
+        return studentRepository.findById(id).orElseThrow().getFaculty();
     }
 
     public Integer getQuantityOfStudents() {
@@ -82,23 +82,66 @@ public class StudentService {
 
     public List<String> getNamesOfStudentsStartingWithLetter(Character firstLetter) {
         return studentRepository.findAll().stream()
-                .filter(s->s.getName().startsWith(String.valueOf(firstLetter)))
-                .map(s->s.getName().toUpperCase()).sorted().collect(Collectors.toList());
+                .filter(s -> s.getName().startsWith(String.valueOf(firstLetter)))
+                .map(s -> s.getName().toUpperCase()).sorted().collect(Collectors.toList());
     }
 
-    public OptionalDouble getAvarageAgeOfStudents2() {
+    public Double getAvarageAgeOfStudents2() {
         LOGGER.info("Was invoked second method for get avarage age of students.");
         List<Integer> listOfAges = studentRepository.findAll().stream()
                 .map(Student::getAge).toList();
-        return listOfAges.stream().mapToDouble(e->e).average();
+        return listOfAges.stream().mapToDouble(e -> e).average().getAsDouble();
     }
 
-    public Integer getSum() {
+    public Long getSum() {
         LOGGER.info("Was invoked method for get sum.");
-        Integer sum = Stream.iterate(1, a -> a + 1)
+        Long sum = Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
                 .parallel()
+                .mapToLong(e -> e)
                 .reduce(0, (a, b) -> a + b);
         return sum;
+    }
+
+    public void getNamesOfFirst6StudentsWithoutSync() {
+
+        System.out.println("Name: " + studentRepository.findById(1L).orElseThrow().getName()
+                + ", id " + studentRepository.findById(1L).orElseThrow().getId());
+        System.out.println("Name: " + studentRepository.findById(2L).orElseThrow().getName()
+                + ", id " + studentRepository.findById(2L).orElseThrow().getId());
+
+        new Thread(() -> {
+            System.out.println("Name: " + studentRepository.findById(3L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(3L).orElseThrow().getId());
+            System.out.println("Name: " + studentRepository.findById(4L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(4L).orElseThrow().getId());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println("Name: " + studentRepository.findById(5L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(5L).orElseThrow().getId());
+            System.out.println("Name: " + studentRepository.findById(6L).orElseThrow().getName()
+                    + ", id " + studentRepository.findById(6L).orElseThrow().getId());
+        }).start();
+    }
+
+    private synchronized void printNameAndIdOfStudentById(Long id) {
+        System.out.println("Name: " + studentRepository.findById(id).orElseThrow().getName()
+                + ", id " + studentRepository.findById(id).orElseThrow().getId());
+    }
+
+    public void getNamesOfFirst6StudentsWithSync() {
+        printNameAndIdOfStudentById(1L);
+        printNameAndIdOfStudentById(2L);
+
+        new Thread(() -> {
+            printNameAndIdOfStudentById(3L);
+            printNameAndIdOfStudentById(4L);
+        }).start();
+
+        new Thread(() -> {
+            printNameAndIdOfStudentById(5L);
+            printNameAndIdOfStudentById(6L);
+        }).start();
     }
 }

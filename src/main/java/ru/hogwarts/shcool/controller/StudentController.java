@@ -90,12 +90,22 @@ public class StudentController {
     }
 
     @GetMapping("/getAvarageAgeOfStudents2")
-    public ResponseEntity<OptionalDouble> getAvarageOfStudents2() {
+    public ResponseEntity<Double> getAvarageOfStudents2() {
         return ResponseEntity.ok(studentService.getAvarageAgeOfStudents2());
     }
 
     @GetMapping("/getSum")
-    public ResponseEntity<Integer> getSum() {
+    public ResponseEntity<Long> getSum() {
         return ResponseEntity.ok(studentService.getSum());
+    }
+
+    @GetMapping("/getNamesOf6FirstStudentsWithoutSync")
+    public void getNamesOf6FirstStudentsWithoutSync() {
+        studentService.getNamesOfFirst6StudentsWithoutSync();
+    }
+
+    @GetMapping("/getNamesOf6FirstStudentsWithSync")
+    public void getNamesOf6FirstStudentsWithSync() {
+        studentService.getNamesOfFirst6StudentsWithSync();
     }
 }
